@@ -7,7 +7,7 @@ namespace Task
         static void Main()
         {
             using var db = new StudentDbContext();
-            db.Database.EnsureCreated();  // Создать БД и таблицу
+            db.Database.EnsureCreated(); 
 
             string ? command;
             do
