@@ -29,6 +29,7 @@ namespace Task
                     case "3": UpdateById(db); break;
                     case "4": UpdateByName(db); break;
                     case "5": DeleteById(db); break;
+                    default: Console.WriteLine("Ошибка ввода"); break;
                 }
             } while (command != "0");
         }
@@ -43,15 +44,23 @@ namespace Task
 
         static void AddStudent(StudentDbContext db)
         {
-            Console.Write("Имя: "); string? name = Console.ReadLine();
-            Console.Write("Фамилия: "); string? surname = Console.ReadLine();
-            Console.Write("Адрес: "); string? address = Console.ReadLine();
-            Console.Write("Пол (М/Ж): "); string? gender = Console.ReadLine();
+            var student = new Student(); 
+            Console.Write("Имя: ");
+            student.Name = Console.ReadLine();
+
+            Console.Write("Фамилия: "); 
+            student.Surname = Console.ReadLine();
+
+            Console.Write("Адрес: "); 
+            student.Address = Console.ReadLine();
+
+            Console.Write("Пол (М/Ж): "); 
+            student.Gender = Console.ReadLine();
+
             Console.Write("Дата рождения (dd.MM.yyyy): ");
             DateTime birth = DateTime.ParseExact(Console.ReadLine(), "dd.MM.yyyy", null);
 
-            db.Students.Add(new Student
-            { Name = name, Surname = surname, Address = address, Gender = gender, BirthDate = birth });
+            db.Students.Add(student);
             db.SaveChanges();
             Console.WriteLine("Добавлен!");
             Console.ReadKey();
