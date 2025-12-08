@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Task.Models;
 
 namespace Task
 {
@@ -10,11 +6,18 @@ namespace Task
 
    public static class CRUDOperationStudent
     {
+        /// <summary>
+        /// Получить всех студентов
+        /// </summary>
+        /// <param name="db">Контекст базы данных</param>
         public static void ShowStudents(StudentDbContext db)
         {
             var students = db.Students.ToList();
             foreach (var s in students)
-                Console.WriteLine($"{s.StudentID}. {s.Surname} {s.Name}, {s.Address}, {s.Gender}, {s.BirthDate:dd.MM.yyyy}");
+            {
+                Console.WriteLine($"{s.StudentID}. {s.Surname} {s.Name}, {s.Address}, {s.Gender?.GenderName}, {s.BirthDate:dd.MM.yyyy}");
+                
+            }
             Console.ReadKey();
         }
 
@@ -31,10 +34,13 @@ namespace Task
             student.Address = Console.ReadLine();
 
             Console.Write("Пол (М/Ж): ");
-            student.Gender = Console.ReadLine();
+            string gender = Console.ReadLine(); 
+            var selectedGender = db.Genders.FirstOrDefault(g => g.GenderName == gender); // поиск гендера по его имени
+            student.Gender = selectedGender; 
 
             Console.Write("Дата рождения (dd.MM.yyyy): ");
             DateTime birth = DateTime.ParseExact(Console.ReadLine(), "dd.MM.yyyy", null);
+            student.BirthDate = birth;
 
             db.Students.Add(student);
             db.SaveChanges();
@@ -62,22 +68,22 @@ namespace Task
             Console.ReadKey();
         }
 
-        public static void UpdateByName(StudentDbContext db)
-        {
-            Console.Write("Имя для поиска: ");
-            string? name = Console.ReadLine();
-            var student = db.Students.FirstOrDefault(s => s.Name == name);
-            if (student != null)
-            {
+        //public static void UpdateByName(StudentDbContext db)
+        //{
+        //    Console.Write("Имя для поиска: ");
+        //    string? name = Console.ReadLine();
+        //    var student = db.Students.FirstOrDefault(s => s.Name == name);
+        //    if (student != null)
+        //    {
 
-                Console.Write("Новый адрес: ");
-                student.Address = Console.ReadLine();
-                db.SaveChanges();
-                Console.WriteLine("Обновлен!");
-            }
-            else Console.WriteLine("Не найден!");
-            Console.ReadKey();
-        }
+        //        Console.Write("Новый адрес: ");
+        //        student.Address = Console.ReadLine();
+        //        db.SaveChanges();
+        //        Console.WriteLine("Обновлен!");
+        //    }
+        //    else Console.WriteLine("Не найден!");
+        //    Console.ReadKey();
+        //}
 
         public static void DeleteById(StudentDbContext db)
         {
