@@ -16,7 +16,7 @@ namespace Task
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Student>().HasKey(s => s.Id);
+            modelBuilder.Entity<Student>().HasKey(s => s.StudentID);
         }
     }
 }
