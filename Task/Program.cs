@@ -1,6 +1,7 @@
 ﻿
 
 using Task.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Task
 {
@@ -35,6 +36,7 @@ namespace Task
                 Console.WriteLine("3. Изменить по ID");
               //  Console.WriteLine("4. Изменить по имени");
                 Console.WriteLine("4. Удалить по ID");
+                Console.WriteLine("5. Поиск по полу (М/Ж)");
                 Console.WriteLine("0. Выход");
                 Console.Write("Выбор: ");
                 command = Console.ReadLine();
@@ -46,6 +48,7 @@ namespace Task
                     case "3": CRUDOperationStudent.UpdateById(db); break;
                    // case "4": CRUDOperationStudent.UpdateByName(db); break;
                     case "4": CRUDOperationStudent.DeleteById(db); break;
+                    case "5": CRUDOperationStudent.FindStudentsByGender(db); break;
                     default: Console.WriteLine("Ошибка ввода"); break;
                 }
             } while (command != "0");
