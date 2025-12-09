@@ -12,7 +12,14 @@ namespace Task
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Student>().HasKey(s => s.StudentID);
+            modelBuilder.Entity<Student>()
+            .HasOne(s => s.Gender)
+            .WithMany()
+            .HasForeignKey(s => s.GenderId);
+
+            modelBuilder.Entity<Gender>().HasData(
+           new Gender { GenderId = 1, GenderName = "Мужской" },
+           new Gender { GenderId = 2, GenderName = "Женский" });
         }
     }
 }
