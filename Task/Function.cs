@@ -16,7 +16,7 @@ namespace Task
             var students = db.Students.ToList();
             foreach (var s in students)
             {
-                Console.WriteLine($"{s.StudentID}. {s.Surname} {s.Name}, {s.Address}, {s.Gender?.GenderName}, {s.BirthDate:dd.MM.yyyy}");
+                Console.WriteLine($"{s.StudentID}. {s.Surname}, {s.Name}, {s.Address}, {s.Gender?.GenderName}, {s.BirthDate:dd.MM.yyyy}");
                 
             }
             Console.ReadKey();

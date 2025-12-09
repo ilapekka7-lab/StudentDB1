@@ -5,10 +5,8 @@ namespace Task.Models
     public class Student
     {
         public int StudentID { get; set; }  
-
         
         public string Name { get; set; } = string.Empty;
-
        
         public string Surname { get; set; } = string.Empty;
 
