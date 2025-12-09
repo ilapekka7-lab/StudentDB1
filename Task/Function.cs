@@ -60,6 +60,18 @@ namespace Task
                 Console.Write("Новая фамилия: ");
                 student.Surname = Console.ReadLine();
 
+                Console.Write("Новый Адрес: ");
+                student.Address = Console.ReadLine();
+
+                Console.Write("Пол (М/Ж): ");
+                string? gender = Console.ReadLine();
+                var selectedGender = db.Genders.FirstOrDefault(g => g.GenderName == gender); // поиск гендера по его имени
+                student.Gender = selectedGender;
+
+                Console.Write("Дата рождения (dd.MM.yyyy): ");
+                student.BirthDate = DateTime.ParseExact(Console.ReadLine(), "dd.MM.yyyy", null);
+               
+
                 Console.Write("");
                 db.SaveChanges();
                 Console.WriteLine("Обновлен!");
