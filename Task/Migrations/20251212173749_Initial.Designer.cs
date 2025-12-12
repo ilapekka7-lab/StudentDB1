@@ -11,8 +11,8 @@ using Task;
 namespace Task.Migrations
 {
     [DbContext(typeof(StudentDbContext))]
-    [Migration("20251208181553_AddGenderTable")]
-    partial class AddGenderTable
+    [Migration("20251212173749_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,44 @@ namespace Task.Migrations
                     b.HasKey("GenderId");
 
                     b.ToTable("Genders");
+
+                    b.HasData(
+                        new
+                        {
+                            GenderId = 1,
+                            GenderName = "Мужской"
+                        },
+                        new
+                        {
+                            GenderId = 2,
+                            GenderName = "Женский"
+                        });
+                });
+
+            modelBuilder.Entity("Task.Models.Group", b =>
+                {
+                    b.Property<int>("GroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("GroupName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("GroupId");
+
+                    b.ToTable("Groups");
+
+                    b.HasData(
+                        new
+                        {
+                            GroupId = 1,
+                            GroupName = "Математики"
+                        },
+                        new
+                        {
+                            GroupId = 2,
+                            GroupName = "Гуманитарии"
+                        });
                 });
 
             modelBuilder.Entity("Task.Models.Student", b =>
@@ -48,7 +86,10 @@ namespace Task.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("GenderId")
+                    b.Property<int?>("GenderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("GroupId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -63,6 +104,8 @@ namespace Task.Migrations
 
                     b.HasIndex("GenderId");
 
+                    b.HasIndex("GroupId");
+
                     b.ToTable("Students");
                 });
 
@@ -70,11 +113,15 @@ namespace Task.Migrations
                 {
                     b.HasOne("Task.Models.Gender", "Gender")
                         .WithMany()
-                        .HasForeignKey("GenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GenderId");
+
+                    b.HasOne("Task.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId");
 
                     b.Navigation("Gender");
+
+                    b.Navigation("Group");
                 });
 #pragma warning restore 612, 618
         }

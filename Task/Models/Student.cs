@@ -16,7 +16,6 @@ namespace Task.Models
 
         //Внешний ключ к полу
         [ForeignKey(nameof(Gender))]
-         
         public int? GenderId { get; set; }
         //Новигационное свойство 
         public Gender? Gender { get; set; }

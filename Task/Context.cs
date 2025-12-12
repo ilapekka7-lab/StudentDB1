@@ -19,6 +19,11 @@ namespace Task
             .WithMany()
             .HasForeignKey(s => s.GenderId);
 
+            modelBuilder.Entity<Student>()
+           .HasOne(s => s.Group)
+           .WithMany()
+           .HasForeignKey(s => s.GroupId);
+
             modelBuilder.Entity<Gender>().HasData(
            new Gender { GenderId = 1, GenderName = "Мужской" },
            new Gender { GenderId = 2, GenderName = "Женский" });

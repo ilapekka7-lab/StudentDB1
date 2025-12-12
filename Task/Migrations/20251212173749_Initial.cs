@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Task.Migrations
 {
     /// <inheritdoc />
-    public partial class AddGenderTable : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,6 +27,19 @@ namespace Task.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Groups",
+                columns: table => new
+                {
+                    GroupId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GroupName = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Groups", x => x.GroupId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
@@ -34,7 +49,8 @@ namespace Task.Migrations
                     Surname = table.Column<string>(type: "TEXT", nullable: false),
                     Address = table.Column<string>(type: "TEXT", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    GenderId = table.Column<int>(type: "INTEGER", nullable: false)
+                    GenderId = table.Column<int>(type: "INTEGER", nullable: true),
+                    GroupId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,14 +59,41 @@ namespace Task.Migrations
                         name: "FK_Students_Genders_GenderId",
                         column: x => x.GenderId,
                         principalTable: "Genders",
-                        principalColumn: "GenderId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "GenderId");
+                    table.ForeignKey(
+                        name: "FK_Students_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "GroupId");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Genders",
+                columns: new[] { "GenderId", "GenderName" },
+                values: new object[,]
+                {
+                    { 1, "Мужской" },
+                    { 2, "Женский" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Groups",
+                columns: new[] { "GroupId", "GroupName" },
+                values: new object[,]
+                {
+                    { 1, "Математики" },
+                    { 2, "Гуманитарии" }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_GenderId",
                 table: "Students",
                 column: "GenderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_GroupId",
+                table: "Students",
+                column: "GroupId");
         }
 
         /// <inheritdoc />
@@ -61,6 +104,9 @@ namespace Task.Migrations
 
             migrationBuilder.DropTable(
                 name: "Genders");
+
+            migrationBuilder.DropTable(
+                name: "Groups");
         }
     }
 }

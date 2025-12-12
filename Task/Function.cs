@@ -16,7 +16,7 @@ namespace Task
             var students = db.Students.ToList();
             foreach (var s in students)
             {
-                Console.WriteLine($"{s.StudentID}. {s.Surname}, {s.Name}, {s.Address}, {s.Gender?.GenderName}, {s.BirthDate:dd.MM.yyyy}");
+                Console.WriteLine($"{s.StudentID}. {s.Surname}, {s.Name}, {s.Address}, {s.Gender?.GenderName}, {s.Group?.GroupName}, {s.BirthDate:dd.MM.yyyy}");
                 
             }
             Console.ReadKey();
@@ -25,6 +25,7 @@ namespace Task
         public static void AddStudent(StudentDbContext db)
         {
             var student = new Student();
+
             Console.Write("Имя: ");
             student.Name = Console.ReadLine();
 
@@ -35,9 +36,30 @@ namespace Task
             student.Address = Console.ReadLine();
 
             Console.Write("Пол (М/Ж): ");
-            string gender = Console.ReadLine(); 
-            var selectedGender = db.Genders.FirstOrDefault(g => g.GenderName == gender); // поиск гендера по его имени
-            student.Gender = selectedGender; 
+            string gender = Console.ReadLine();
+            var selectedGender = db.Genders
+                .FirstOrDefault(g => g.GenderName == gender);
+
+            if (selectedGender == null)
+            {
+                Console.WriteLine("Такого пола нет в базе.");
+                Console.ReadKey();
+                return;
+            }
+            student.GenderId = selectedGender.GenderId;   
+
+            Console.Write("Группа: ");
+            string group = Console.ReadLine();
+            var selectedGroup = db.Groups
+                .FirstOrDefault(g => g.GroupName == group);
+
+            if (selectedGroup == null)
+            {
+                Console.WriteLine("Такой группы нет в базе.");
+                Console.ReadKey();
+                return;
+            }
+            student.GroupId = selectedGroup.GroupId;    
 
             Console.Write("Дата рождения (dd.MM.yyyy): ");
             DateTime birth = DateTime.ParseExact(Console.ReadLine(), "dd.MM.yyyy", null);
